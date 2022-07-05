@@ -54,7 +54,7 @@ public class AsmModuleClassProvider implements ClassProvider {
 
   public String getModuleName(FoundFile file) {
     final String[] moduleName = { null };
-    org.objectweb.asm.ClassVisitor visitor = new org.objectweb.asm.ClassVisitor(Opcodes.ASM8) {
+    org.objectweb.asm.ClassVisitor visitor = new org.objectweb.asm.ClassVisitor(Opcodes.ASM9) {
 
       @Override
       public ModuleVisitor visitModule(String name, int access, String version) {
