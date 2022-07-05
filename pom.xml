@@ -6,7 +6,7 @@
     <groupId>org.soot-oss</groupId>
     <artifactId>soot-utbot-fork</artifactId>
     <name>Soot - a J*va Optimization Framework</name>
-    <version>4.2.1.2</version>
+    <version>4.2.1.3</version>
     <description>A Java Optimization Framework</description>
     <url>https://soot-oss.github.io/soot</url>
     <organization>
@@ -68,7 +68,7 @@
         <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
         <licence-check.failOnMissingHeader>true</licence-check.failOnMissingHeader>
         <testcase.groups.excluded>categories.Java9Test,categories.Java11Test</testcase.groups.excluded>
-        <asm.version>8.0.1</asm.version>
+        <asm.version>9.2</asm.version>
     </properties>
     <build>
         <finalName>sootclasses-trunk</finalName>
