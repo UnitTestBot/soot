@@ -3,15 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.soot-oss</groupId>
+    <groupId>org.unittestbot.soot</groupId>
     <artifactId>soot-utbot-fork</artifactId>
     <name>Soot - a J*va Optimization Framework</name>
     <version>4.4.0-SNAPSHOT</version>
     <description>A Java Optimization Framework</description>
-    <url>https://soot-oss.github.io/soot</url>
+    <url>https://github.com/UnitTestBot/soot</url>
     <organization>
-        <name>Soot OSS</name>
-        <url>https://soot-oss.org/</url>
+        <name>UnitTestBot</name>
+        <url>https://github.com/UnitTestBot</url>
     </organization>
     <licenses>
         <license>
