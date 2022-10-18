@@ -3,15 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.soot-oss</groupId>
+    <groupId>org.unittestbot.soot</groupId>
     <artifactId>soot-utbot-fork</artifactId>
     <name>Soot - a J*va Optimization Framework</name>
     <version>4.4.0-FORK-1</version>
     <description>A Java Optimization Framework</description>
-    <url>https://soot-oss.github.io/soot</url>
+    <url>https://github.com/UnitTestBot/soot</url>
     <organization>
-        <name>Soot OSS</name>
-        <url>https://soot-oss.org/</url>
+        <name>UnitTestBot</name>
+        <url>https://github.com/UnitTestBot</url>
     </organization>
     <licenses>
         <license>
@@ -46,6 +46,11 @@
             <organizationUrl>https://www.sit.fraunhofer.de/en/</organizationUrl>
         </developer>
     </developers>
+    <scm>
+        <connection>scm:git:git@github.com:UnitTestBot/soot.git</connection>
+        <developerConnection>scm:git:git@github.com:UnitTestBot/soot.git</developerConnection>
+        <url>https://github.com/UnitTestBot/soot</url>
+    </scm>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -73,6 +78,17 @@
     <build>
         <finalName>sootclasses-trunk</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.8</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>xml-maven-plugin</artifactId>
@@ -416,15 +432,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>${maven-source-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -589,10 +596,14 @@
         </dependency>
     </dependencies>
     <distributionManagement>
+        <!-- Central Repository -->
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
         <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/UnitTestBot/soot</url>   
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
     <profiles>
@@ -635,6 +646,7 @@
             </build>
         </profile>
         <profile>
+            <id>deploy</id>
             <build>
                 <plugins>
                     <plugin>
@@ -658,6 +670,27 @@
                                 <goals>
                                     <goal>jar</goal>
                                 </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven-gpg-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <!-- Prevent `gpg` from using pinentry programs -->
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
