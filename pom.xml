@@ -46,6 +46,11 @@
             <organizationUrl>https://www.sit.fraunhofer.de/en/</organizationUrl>
         </developer>
     </developers>
+    <scm>
+        <connection>scm:git:git@github.com:UnitTestBot/soot.git</connection>
+        <developerConnection>scm:git:git@github.com:UnitTestBot/soot.git</developerConnection>
+        <url>https://github.com/UnitTestBot/soot</url>
+    </scm>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
