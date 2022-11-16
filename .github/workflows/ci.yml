@@ -31,7 +31,16 @@ jobs:
         if: always()
         run: |
           mvn -B clean license:check-file-header -Dlicence-check.failOnMissingHeader=true
-    
+
+      - name: Check version changes
+        run: |
+          chmod +x .github/workflows/xml_parser.py
+          VERSION_BRANCH=$(python3 .github/workflows/xml_parser.py pom.xml)
+          git checkout --force develop
+          chmod +x .github/workflows/xml_parser.py
+          VERSION_UPSTREAM=$(python3 .github/workflows/xml_parser.py pom.xml)
+          [[ "$VERSION_UPSTREAM" == "$VERSION_BRANCH" ]] || echo "Change version to release package!" ; exit 1
+
   BuildAndTest:
     name: Build and Test with java ${{ matrix.java_version }}
     needs: [StyleAndLicense]
