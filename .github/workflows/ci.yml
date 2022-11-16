@@ -35,11 +35,9 @@ jobs:
       - name: Check version changes
         run: |
           chmod +x .github/workflows/xml_parser.py
-          VERSION_BRANCH=$(python3 .github/workflows/xml_parser.py pom.xml)
-          git checkout --force develop
-          chmod +x .github/workflows/xml_parser.py
-          VERSION_UPSTREAM=$(python3 .github/workflows/xml_parser.py pom.xml)
-          [[ "$VERSION_UPSTREAM" == "$VERSION_BRANCH" ]] || echo "Change version to release package!" ; exit 1
+          VERSION=$(python3 .github/workflows/xml_parser.py pom.xml)
+          EXIT_CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://s01.oss.sonatype.org/content/repositories/releases/org/unittestbot/soot/soot-utbot-fork/$(VERSION)/")
+          [[ "EXIT_CODE" == "200" ]] && echo "Change version to release package!" ; exit 1
 
   BuildAndTest:
     name: Build and Test with java ${{ matrix.java_version }}
@@ -63,7 +61,7 @@ jobs:
         
   DeployArtifacts:
     name: Deploy artifacts to Maven Central
-#    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/umbrella'
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop'
     needs: [BuildAndTest]
     runs-on: ubuntu-latest
     steps:
