@@ -26,6 +26,8 @@ jobs:
         if: always()
         run: |
           mvn -B clean license:check-file-header -Dlicence-check.failOnMissingHeader=true
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
       - name: Check version changes
         run: |
           chmod +x .github/workflows/xml_parser.py
