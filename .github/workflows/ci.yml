@@ -33,7 +33,7 @@ jobs:
           chmod +x .github/workflows/xml_parser.py
           VERSION=$(python3 .github/workflows/xml_parser.py pom.xml)
           EXIT_CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://s01.oss.sonatype.org/content/repositories/releases/org/unittestbot/soot/soot-utbot-fork/${VERSION}/")
-          [[ "EXIT_CODE" == "200" ]] && echo "Change version to release package!" ; exit 1
+          [[ "${EXIT_CODE}" == "200" ]] && ( echo "Change version to release package!" ; exit 1 )
 
   BuildAndTest:
     name: Build and Test with java ${{ matrix.java_version }}
