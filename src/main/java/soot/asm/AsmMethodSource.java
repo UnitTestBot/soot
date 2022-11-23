@@ -318,6 +318,7 @@ public class AsmMethodSource implements MethodSource {
   private final InsnList instructions;
   private final List<LocalVariableNode> localVars;
   private final List<TryCatchBlockNode> tryCatchBlocks;
+  private final Set<AbstractInsnNode> visitedNodes = new LinkedHashSet<AbstractInsnNode>();
   private final Set<LabelNode> inlineExceptionLabels = new LinkedHashSet<LabelNode>();
   private final Map<LabelNode, Unit> inlineExceptionHandlers = new LinkedHashMap<LabelNode, Unit>();
   private final CastAndReturnInliner castAndReturnInliner = new CastAndReturnInliner();
@@ -1910,6 +1911,12 @@ public class AsmMethodSource implements MethodSource {
 
     do {
       Edge edge = worklist.pollLast();
+      while (edge != null && visitedNodes.contains(edge.insn)) {
+        edge = worklist.pollLast();
+      }
+      if (edge == null) {
+        break;
+      }
       AbstractInsnNode insn = edge.insn;
       stack = edge.stack;
       // restore line. this is important since we might have traversed the edge that leads to
@@ -1920,6 +1927,7 @@ public class AsmMethodSource implements MethodSource {
       edge.stack = null;
       insnLoop: do {
         int type = insn.getType();
+        visitedNodes.add(insn);
         switch (type) {
           case FIELD_INSN:
             convertFieldInsn((FieldInsnNode) insn);
